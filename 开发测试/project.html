@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		var A = function(){
+			function a (){
+			
+			};
+
+			a.prototype.b = function(){
+				console.log(1);
+			};
+
+			a.prototype.c = function(){
+				console.log(2);
+				console.log(111,this.b());
+			};
+			a.prototype = {
+				b:function(){
+					console.log(1234);
+				}
+			}
+
+			// // var d = new A;
+			// d.c()
+			// console.log(this)
+			
+			return  a;
+			// function a(){
+			// 	this.b();
+			// };
+			// a.prototype.b = function(){
+			// 	console.log(1);
+			// };
+
+			// a.prototype.c = function(){
+			// 	console.log(2);
+			// 	console.log(111,this.b());
+			// };
+			// return a;
+
+		}();
+
+		var c = new A();
+		console.log(c)
+		console.log(c.b)
+		c.b();
+
+
+
+
+	</script>
+</body>
+</html>

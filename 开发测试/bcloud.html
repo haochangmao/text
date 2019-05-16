@@ -1,0 +1,25 @@
+<!-----------------2019-03-19 10:45:09.244---------------------->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        body {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body style="text-align:center;">
+<div id="player" style="margin-right:auto;margin-left:auto;"></div>
+<script type="text/javascript" charset="utf-8" src="//yuntv.letv.com/player/vod/bcloud.js"></script>
+<script>var bcloud={tool:{getUrlParams:function(){var a={},b=window.location.search;if(-1!=b.indexOf("?"))for(var b=b.substr(1).split("&"),c=0;c<b.length;c++){var d=b[c].substr(0,b[c].indexOf("=")),e=b[c].substr(b[c].indexOf("=")+1);a[d]=e}return a},isFrame:function(){return self!=top},isMobile:function(){var a=navigator.userAgent,b=a.match(/(iPad).*OS\s([\d_]+)/),c=!b&&a.match(/(iPhone\sOS)\s([\d_]+)/),d=a.match(/(Android)\s+([\d.]+)/),a=/windows phone/.test(a);return c||d||a||b},getHeight:function(){return window.innerHeight?
+window.innerHeight:document.body&&document.body.clientHeight?document.body.clientHeight:document.documentElement&&document.documentElement.clientHeight&&document.documentElement.clientWidth?document.documentElement.clientHeight:document.body.clientHeight}},player:{skipToUrl:function(a){if(a.hasOwnProperty("skip")&&a.hasOwnProperty("page_url")){var b=a.page_url;"fenxiang"==a.skip&&""!=b&&(window.location.href=unescape(b))}},initPlayer:function(){var a=bcloud.tool.getUrlParams(),b=document.getElementById("player"),
+c="100%",d="100%";bcloud.player.skipToUrl(a);a.hasOwnProperty("width")||(c=750);a.hasOwnProperty("height")||(d=422);!bcloud.tool.isFrame()&&bcloud.tool.isMobile()?(bcloud.player.initMobilePlayer(a,b),b.style.width="100%",b.style.height=bcloud.tool.getHeight()+"px"):("100%"==d&&(d=bcloud.tool.getHeight()),c+="",d+="",b.style.width=-1!=c.indexOf("%")?c:c+"px",b.style.height=-1!=d.indexOf("%")?d:d+"px");a.pageControls=1;bcloud.tool.isFrame()||(a.wmode="direct");(new CloudVodPlayer).init(a,"player")},
+initMobilePlayer:function(a,b){var c=document.createElement("meta");c.name="viewport";c.content="width=device-width,initial-scale=1,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0";document.getElementsByTagName("head")[0].appendChild(c);a.width="100%";a.height="100%";a.isX5Type||(a.x5Type="h5");document.body.style.backgroundColor="#000000";window.onload=window.onpageshow=window.onresize=function(){b.style.height=bcloud.tool.getHeight()+"px"};var c=navigator.userAgent.toLowerCase(),d=null,e=0;
+if(0<=c.indexOf("iphone")||0<=c.indexOf("ipad"))b.addEventListener("touchend",function(a){var b=(new Date).getTime();d=d||b+1;var c=b-d;if(500>c&&0<c)return a.preventDefault(),!1;d=b},!1),b.addEventListener("touchstart",function(a){a=a.touches.item(0);e={x:a.pageX,y:a.pageY}},!1),b.addEventListener("touchmove",function(a){var b=a.touches.item(0);5<Math.abs(b.pageY-e.y)&&a.preventDefault()},!1)}}};bcloud.player.initPlayer();
+</script>
+
+</body>
+</html>

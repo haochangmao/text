@@ -1,0 +1,276 @@
+ <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>地图定位</title>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="__ROOT__css/index.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="ttps://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="__ROOT__js/index.js"></script>
+<style type="text/css">
+body, html,#allmap {
+width:87.5%;
+height:600px;
+margin:0px auto;
+font-family:"微软雅黑";
+}
+a{ cursor: pointer;}
+#staff_city{ 
+width: 100%;
+height:33px;
+color:blue;
+margin: 35px 91px;
+padding-top: 10px;
+}
+.ui_city_change_inner{
+margin-left:500px;
+border:2px solid blue;
+}
+.citylist_popup_main{
+margin-left:250px;
+}
+.BMap_mask{
+border: 3px solid #ABB1BA;
+
+
+}
+.show_p_l{
+font-weight: bold;
+position: relative;
+top:20px;
+left: 90px;
+}
+.show_p_l>.address1{
+margin-left: 90px;
+}
+</style>
+<!-- 引入百度API密钥 -->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Pw0FQ4H50yIEKD7hR3Pha1KqkqFd63Yo"></script>
+</head>
+<body>
+
+<!-- 保留用户当前经纬度和位置名称的值到页面上 -->
+<div class="show_p_l">
+<span  class="position1" ></span>
+<span  class="location1"></span>
+<span class="address1"></span>
+</div> 
+
+
+<!-- 用户地理位置操作相关 -->
+<div id="staff_city">
+<input type="text" name="suggestId" id="suggestId" size="20" style="width:300px" placeholder="位置搜索">
+<span  id="searchResultPanel" style="border:1px solid #c0c0c0;width:150px;height:auto;display: none;"></span>
+  <span style="margin-left:10px;">&gt;&gt;</span>
+  <input type="text" name="l-map" id="l-map" style="width:200px;margin-left:30px" value="您当前位置经度信息" >
+  <input type="text"  name="r-result" id="r-result" style="width:200px" value="您当前位置纬度信息" >
+  <input type="button" name="staff_ensure" id="staff_ensure" value="确定">
+  <input type="text" name="" id="staff_toponymy" value="详细地址" style="width:296px;height:26px;font-size:8px;margin-left: 30px">
+</div>
+
+
+
+
+
+
+ <!--  显示地图 -->
+<div id="allmap"></div>
+
+
+
+<script type="text/javascript">
+
+
+// 获取url的某个字段
+function GetQueryString(name){
+   var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+   var r = window.location.search.substr(1).match(reg);
+   if(r!=null)return  unescape(r[2]); return null;
+}
+var id=GetQueryString('staff_id');
+var cur=GetQueryString('c');
+    //页面刚加载时就发送请求。
+$(function(){
+$.post('http://123.57.45.74/feiybg1/public/index.php/admin/Testnumber/default_address',{staff_id:id},function(data){
+// console.log(data);
+if(data.infor.position==0){
+$('.show_p_l').css('display','none');
+}else{
+//加载后台传递过来的 经纬度
+$(".position1").html("经度坐标:"+data.infor.position+"、");
+$(".location1").html("纬度坐标:"+data.infor.location);
+//加载后台传递过来的 地理位置数据
+$('.address1').html("位置名称:"+data.infor.address+"。");
+$('.show_p_l').css('display','block');
+//打桩测试
+// console.log(data.infor.position,data.infor.location,data.infor.address);
+
+
+}
+
+
+
+
+})
+})
+// 百度地图API功能
+// 创建Map实例
+var map = new BMap.Map("allmap");   
+// 初始化地图,设置中心点坐标和地图级别
+map.centerAndZoom(new BMap.Point(116.404, 39.915), 11); 
+//将map变量存储在全局
+window.map = map;
+ //添加地图类型控件
+map.addControl(new BMap.MapTypeControl({
+mapTypes:[
+            BMAP_NORMAL_MAP,
+            BMAP_HYBRID_MAP
+        ]}));  
+// 设置地图显示的城市 此项是必须设置的
+map.setCurrentCity("北京"); 
+//开启鼠标滚轮缩放
+map.enableScrollWheelZoom(true);
+    //左上角添加比例尺
+var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});
+map.addControl(top_left_control);
+//左上角添加默认缩放平移控件
+var top_left_navigation = new BMap.NavigationControl();
+map.addControl(top_left_navigation);
+
+
+//城市列表 
+map.enableInertialDragging();
+map.enableContinuousZoom();
+var size = new BMap.Size(10, 20);
+map.addControl(new BMap.CityListControl({
+   anchor: BMAP_ANCHOR_TOP_LEFT,
+   offset: size,
+   // 切换城市之间事件
+   // onChangeBefore: function(){
+   //    alert('before');
+   // },
+   // 切换城市之后事件
+   // onChangeAfter:function(){
+   //   alert('after');
+   // }
+}));
+
+
+//为地图添加文字标签
+var point = new BMap.Point(116.417854,39.921988);
+map.centerAndZoom(point, 15);
+var opts = {
+// 指定文本标注所在的地理位置
+ position : point,  
+ //设置文本偏移量  
+ offset   : new BMap.Size(30, -30)    
+}
+
+//单击获取点击的经纬度
+map.addEventListener("click",function(e){
+// alert(e.point.lng + "," + e.point.lat);
+$("#l-map").val("经度坐标:"+e.point.lng);
+$("#r-result").val("纬度坐标:"+e.point.lat);
+});
+  //获取用户当前详细地址
+  var geoc = new BMap.Geocoder();    
+
+
+map.addEventListener("click", function(e){        
+var pt = e.point;
+geoc.getLocation(pt, function(rs){
+var addComp = rs.addressComponents;
+$('#staff_toponymy').val("详细地址:"+addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+console.log("详细地址:"+addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+});        
+});
+
+
+//输入信息提示
+function G(id) {
+return document.getElementById(id);
+};
+//建立一个自动完成的对象
+var ac = new BMap.Autocomplete(   
+{"input" : "suggestId"
+,"location" : map
+});
+//鼠标放在下拉列表上的事件
+ac.addEventListener("onhighlight", function(e) {  
+var str = "";
+var _value = e.fromitem.value;
+var value = "";
+if (e.fromitem.index > -1) {
+value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+}    
+str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+value = "";
+if (e.toitem.index > -1) {
+_value = e.toitem.value;
+value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+}    
+str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+G("searchResultPanel").innerHTML = str;
+});
+
+
+var myValue;
+//鼠标点击下拉列表后的事件
+ac.addEventListener("onconfirm", function(e) {    
+var _value = e.item.value;
+myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+
+setPlace();
+});
+
+
+function setPlace(){
+//清除地图上所有覆盖物
+map.clearOverlays();   
+function myFun(){
+var pp=local.getResults().getPoi(0).point;
+map.centerAndZoom(pp,18);
+map.addOverlay(new BMap.Marker(pp));
+}
+var local=new BMap.LocalSearch(map,{onSearchComplete:myFun});
+local.search(myValue);
+}
+
+
+//点击事件：向testnumber.html页面 传值
+$("#staff_ensure").click(function(){
+var $position=$("#l-map").val().split(":")[1];
+var $location =$("#r-result").val().split(":")[1];
+var $address=$("#staff_toponymy").val().split(":")[1];
+$.ajax({
+type:"post",
+url:"http://123.57.45.74/feiybg1/public/index.php/admin/Testnumber/add_address",
+data:{staff_id:id,position:$position,location:$location,address:$address},
+success:function(data){
+// 对位置信息的点击更新
+$('.position1').html("经度坐标:"+$position+"、");
+$('.location1').html("纬度坐标:"+$location);
+$('.address1').html("位置名称"+$address+"。");
+$('.show_p_l').css('display','block');
+// alert('点击更新');
+
+
+
+} 
+
+})
+});
+$('.back').click(function(){
+window.location.href='http://123.57.45.74/feiybg1/public/index.php/admin/testnumber/testnumber?c='+cur;
+
+
+})
+</script>
+
+
+</body>
+</html>

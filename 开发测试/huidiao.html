@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+	<!-- <script src="./bcloud.js"></script> -->
+	<script src="http://yuntv.letv.com/player/vod/bcloud.js"></script>
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		var player = new CloudVodPlayer(); 
+		player.init({
+			"callbackJs":"call",
+			"uu":"9q4ovmpypv",
+			"vu":'24bd3052f8',
+			// "uu":"hghwkfk3g1",
+			// "vu":'57b5c714ec',
+			"pu":"4CDABAC5CF",
+			// "skinnable":"0",
+			// "controls":"0",
+			"width":"100%",
+			"height":300
+		},"palyer"); 
+		window.call = function(type,data){
+			if(type=="videoStop"){
+
+				
+			}
+			console.log(type);
+			console.log(data);
+		};
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>265</title>
+	
+</head>
+<body>
+	
+	<script>
+var get_mime = function(filetype) {  
+    var mimetype = '';
+    var media_container = 'video';
+    switch (filetype) {
+        case 'mp4':
+            mimetype = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';
+            break;
+        case 'ogg':
+            mimetype = 'video/ogg; codecs="theora, vorbis"';
+            break;
+        case 'webm':
+            mimetype = 'video/webm; codecs="vp8, vorbis"';
+            break;
+        case 'mp3':
+            mimetype = 'audio/mpeg';
+            media_container = 'audio';
+            break;
+    }
+    return {
+        'mimetype': mimetype,
+        'container': media_container
+    };
+};
+
+var supports_media = function(mimetype, container) {  
+    var elem = document.createElement(container);
+    if (typeof elem.canPlayType == 'function' ) {
+        var playable = elem.canPlayType(mimetype);
+        if ((playable.toLowerCase() == 'maybe') || (playable.toLowerCase() == 'probably')) {
+            return true;
+        }
+    }
+    return false;
+};
+
+
+get_mime('mp4');
+console.log(get_mime('mp4'))
+console.log(supports_media(get_mime('mp4').mimetype,get_mime('mp4').container))
+
+	
+	</script>
+</body>
+</html>

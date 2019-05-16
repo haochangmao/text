@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>FLV H.265视频播放器</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .controls {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 8px;
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <style>
+        body{
+            position: relative;
+            margin: 0px auto;
+            width: 1000px;
+        }
+        .container {
+            height: 400px;
+            width: 500px;
+            position: relative;
+        }
+
+        #video {
+          background: #000;
+          width: 300px;
+        }
+
+        #input {
+            width: 300px;
+        }
+        .log{
+            position: absolute;
+            left: 700px;
+            top: -20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <p>点击下方load加载测试H.265视频</p>
+        <div class="container">
+            <div src="" id="videoElement"></div>
+        </div>
+
+        <div class="controls">
+            <h2>视频</h2>
+            <input id="input" value="https://gw.alicdn.com/bao/uploaded/LB1l2iXISzqK1RjSZFjXXblCFXa.mp4?file=LB1l2iXISzqK1RjSZFjXXblCFXa.mp4" />
+            <button onclick="load()">Load</button>
+            <button onclick="play()">Play</button>
+            <button onclick="pause()">Pause</button>
+            <button onclick="muted()">Muted</button>
+            <button onclick="destroy()">Destroy</button>
+            <button onclick="getIsSupported()">GetIsSupported</button>
+        </div>
+    </div>
+    <div class="log">
+        <h2>日志</h2>
+        <div id="log"></div>
+        <div id="info"></div>
+        <div id="err">打开控制台可查看ffmpeg内部异常信息</div>
+    </div>
+<script src="https://g.alicdn.com/videox/mp4-h265/1.0.2/example.js" type="text/javascript"></script>
+
+</html>

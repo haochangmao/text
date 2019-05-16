@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>云采集下载</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<style>
+		html,body{background-color:#fff;margin:0;padding: 0;}
+		#bg{
+			width: 100%;
+			height: 100%;
+			background-color: #fff; 
+		}
+		#downLoad{
+			position: relative;
+		}
+		#baImg{
+			width: 100%;height: auto;
+		}
+		#downImg{
+			width: 46.2%;position: absolute;top:66.4%;right: 4%;cursor:pointer;
+		}
+		#zhe{
+			width: 100%;height: 100%;position: fixed;background:#000;opacity: 0.5;top:0;left: 0;display: none;
+		}
+		#zheImg{
+			width: 74.4%;height: auto;position: absolute;top: 0.5%;right: 1.5%;
+		}
+		#dang{
+			width: 100%;height: 100%;background: #fff;opacity: 0;position: fixed;top: 0;left: 0;
+		}
+	</style>
+</head>
+<body>
+	<div id="bg">
+		<div id="downLoad">
+			<img id="baImg" src="http://i3.letvimg.com/lc05_lecloud/201607/13/10/41/bg.jpg">
+			<div id="dang">&nbsp;</div>
+			<img id="downImg" src="http://i0.letvimg.com/lc07_lecloud/201607/13/10/42/down_07.png" alt="">
+			
+		</div>
+		<div id="zhe">
+			<img id="zheImg" src="http://i3.letvimg.com/lc07_lecloud/201607/13/10/42/app_arrow-open.png" alt="">
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		window.onload = function(){
+		var dlBtn = document.getElementById("downImg");
+		var appShareModal = document.getElementById("zhe");
+
+		var ua = navigator.userAgent;
+		var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+		    isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+		    isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+		    isWeiXin = ua.toLowerCase().match(/MicroMessenger/i) == 'micromessenger',
+		    isMobile = isIphone || isAndroid;
+
+		if(isWeiXin){
+		    appShareModal.style.display = "block";
+		}
+
+		dlBtn.onclick = function(){
+		    if(isWeiXin){
+		    	appShareModal.style.display = "block";
+		    	return;
+		    }
+		    if((isIphone || ipad )){
+		    	window.location.href = "itms-services://?action=download-manifest&url=https://cloud-live.los-cn-north-1.lecloudapis.com/yuncaiji/iOSLecloudYuncaiji.plist";
+		    	return;
+		    }
+		    if(isAndroid){
+		    	window.location.href = "http://cloud-live.los-cn-north-1.lecloudapis.com/yuncaiji%2FandroidLecloudYuncaiji.apk";
+		    	return;
+		    }
+		    window.location.href = "http://cloud-live.los-cn-north-1.lecloudapis.com/yuncaiji%2FandroidLecloudYuncaiji.apk";
+		};
+		appShareModal.onclick = function(){
+		    appShareModal.style.display = "none";
+		};
+
+
+
+
+
+
+
+
+	};
+</script>
+</body>
+</html>
+

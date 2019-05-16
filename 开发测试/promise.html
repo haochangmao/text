@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<title>点播</title>
+	<style>
+		#player1{
+			width: 100%;
+			height:100px;
+			background: red;
+			overflow: hidden;
+		}
+		embed{
+			width:100%;
+			height: 500px;
+		}
+	</style><!-- 
+	<link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+  <script src="https://unpkg.com/video.js/dist/video.js"></script>
+  <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script> -->
+
+</head>
+<body>
+	<button type="">点击切换</button>
+	<button type="">api</button>
+	<button type="">seek</button>
+	<button type="">playNewId</button>
+	<!-- <div id="player1">
+			<embed src="http://yuntv.letv.com/bcloud.html?uu=hghwkfk3g1&vu=a1a8548e70&pu=4CDABAC5CF&width=100%&height=100%&auto_play=1&lang=zh_CN" type=""></embed>
+	</div> -->
+<!-- case SkinAction.FULLSCREEN:"iphone"==videoSdkTool.getDevice()&&(this.el.style.display="none") -->
+	<script type="text/javascript" charset="utf-8" src="./bcloud.js"></script>
+	<!-- <script type="text/javascript" charset="utf-8" src="./bcloud2.js"></script> -->
+	<!-- <script type="text/javascript" charset="utf-8" src="https://yuntv.letv.com/player/vod/bcloud.js"></script> -->
+
+
+
+	<!-- 	<video autobuffer autoloop loop controls>
+			<source src="http://qiniuplay.lecloud.com/play.videocache.lecloud.com/278/36/73/bcloud/819622/ver_00_22-1120831701-avc-199085-aac-48000-1412667-46439522-ce2e5576ed13654ec06b23af27408645-1524728395455.mp4?crypt=60aa7f2e94&b=251&nlh=4096&nlt=60&bf=30&p2p=1&video_type=mp4&termid=2&tss=no&platid=2&splatid=209&its=0&qos=3&fcheck=0&amltag=8&mltag=8&uid=2071799267.rp&keyitem=GOw_33YJAAbXYE-cnQwpfLlv_b2zAkYctFVqe5bsXQpaGNn3T1-vhw..&ntm=1552545000&nkey=c46cc1dd4a83e3ea128a752b9c12ed73&nkey2=aad9daf58f8eda3743f3e2081ecb77b4&auth_key=1552545000-1-0-2-209-dfb028ec60043c3c496036b38a263b84&geo=CN-1-0-666&mmsid=246066655&tm=1552526619&key=4569300a26c88a0579d3fc836209e53c&payff=0&cuid=819622&vtype=21&dur=1412&p1=3&p2=31&p3=310&cf=h5-android&p=101&playid=0&tag=mobile&sign=bcloud_819622&pay=0&ostype=android&hwtype=un&uuid=E774467061BDC359374D7693F9233F49_0&vid=48047820&ajax=1&_r=jsonp&uidx=0&errc=0&gn=50041&ndtype=2&vrtmcd=109&buss=8&cips=123.125.37.227">
+			<p><a href="/media/video.oga">Download this video file.</a></p>
+			</object>
+		</video> -->
+<div class="video-js" id="palyer" style="height: 200px;">
+		
+</div>
+	<script>
+
+	var player = new CloudVodPlayer(); 
+					player.init({
+						"uu":"79kao1omls",
+						"vu":'b1a9190a65',
+						"pu":"4CDABAC5CF",
+						"skinnable":"1",
+						"controls":"0",
+						// "auto_play":1,
+						// "gpcflag":1,
+						// "start":'40',
+						"width":'100%',
+						"height":'100%',
+						// "lang":"zh_CN"
+					},"palyer"); 
+					
+			
+var btn = document.getElementsByTagName('button')[0],index = 0;
+var btn1 = document.getElementsByTagName('button')[1];
+var btn2 = document.getElementsByTagName('button')[2];
+var btn3 = document.getElementsByTagName('button')[3];
+var arr = ['f78ab4c244','a1a8548e70','57b5c714ec','4bd7afcd72'];
+
+btn3.addEventListener("click",function(){
+				player.sdk.playNewId({"vu":"57b5c714ec","auto_play": 1,"start":"20"});
+	});
+
+
+btn.addEventListener("click",function(){
+
+
+				new Promise(function(resolve, reject){
+        //做一些异步操作
+	        player.sdk.playNewId({"vu":arr[index],"auto_play": 1,"start":"20"});
+	        console.log(1)
+
+    		}).then(function(data){
+    			console.log(2)
+				    player.sdk.startUp(10);
+				})
+
+				// player.sdk.playNewId({"vu":arr[index],"auto_play": 1});
+				// setTimeout(function(){
+
+				// player.sdk.startUp(10);
+				// },1000);
+				// console.log(1)
+				// player.init({
+				// 		"uu":"hghwkfk3g1",
+				// 		"vu":arr[index],
+				// 		"pu":"4CDABAC5CF",
+				// 		"skinnable":"1",
+				// 		"controls":"0",
+				// 		"auto_play":1,
+				// 		// "gpcflag":1,
+				// 		"width":400,
+				// 		"height":'100%',
+				// 		// "lang":"zh_CN"
+				// 	},"palyer"); 
+				index++;
+				if(index==4){
+					index = 0;
+				}
+	});
+btn1.addEventListener("click",function(){
+	console.log(123)
+				player.sdk.startUp();
+	});
+btn2.addEventListener("click",function(){
+	console.log(1231111)
+				player.sdk.playNewId({ "vu": 'ab3250c491', "auto_play": 0, "start": 600 });
+	});
+	</script>
+	<script type="text/javascript"> 
+		// var myPlayer = videojs('roomVideo',{
+  //           bigPlayButton : false,
+  //           textTrackDisplay : false,
+  //           posterImage: true,
+  //           errorDisplay : false,
+  //           controlBar : false
+  //       },function(){
+
+					
+        	
+  //       });
+		// var player = new CloudVodPlayer(); 
+		// 			player.init({
+		// 				"uu":"hghwkfk3g1",
+		// 				"vu":"a1a8548e70",//f78ab4c244,a1a8548e70,57b5c714ec,4bd7afcd72
+		// 				"pu":"4CDABAC5CF",
+		// 				// "skinnable":"1",
+		// 				// "controls":"0",
+		// 				"auto_play":1,
+		// 				// "gpcflag":1,
+		// 				"width":360,
+		// 				"height":200,
+		// 				// "lang":"zh_CN"
+		// 			},"palyer"); 
+		// player.init({
+		// 	"uu":"wwzosyxaxw",
+		// 	"vu":"1bc6d2a539",
+		// 	"pu":"241a3ae3a4",
+		// 	"auto_play":1,
+		// 	"gpcflag":1,
+		// 	"width":640,
+		// 	"height":360,
+		// 	"lang":"zh_CN"
+		// }); 
+		// setTimeout(function(){
+		// 	console.log(1,player.sdk)
+		// 	player.sdk.replayVideo();
+
+
+		// },2000)
+	</script>
+	<script>
+
+// function runAsync1(){
+//     var p = new Promise(function(resolve, reject){
+//         //做一些异步操作
+//         setTimeout(function(){
+//             console.log('执行完成1');
+//             resolve('随便什么数据1');
+//         }, 1000);
+//     });
+//     return p;            
+// };
+// function runAsync2(){
+//     var p = new Promise(function(resolve, reject){
+//         //做一些异步操作
+//         setTimeout(function(){
+//             console.log('执行完成2');
+//             resolve('随便什么数据2');
+//         }, 1000);
+//     });
+//     return p;            
+// };
+// function runAsync3(){
+//     var p = new Promise(function(resolve, reject){
+//         //做一些异步操作
+//         setTimeout(function(){
+//             console.log('执行完成3');
+//             resolve('随便什么数据3');
+//         }, 1000);
+//     });
+//     return p;            
+// };
+// function runAsync4(){
+//     var p = new Promise(function(resolve, reject){
+//         //做一些异步操作
+//         setTimeout(function(){
+//             console.log('执行完成4');
+//             resolve('随便什么数据4');
+//         }, 1000);
+//     });
+//     return p;            
+// };
+// // runAsync().then(function(data){
+// //     console.log(1,data);
+// //     //后面可以用传过来的数据做些其他操作
+// //     //......
+// // });
+// runAsync1()
+// .then(function(data){
+//     console.log(data);
+//     return runAsync2();
+// })
+// .then(function(data){
+//     console.log(data);
+//     return runAsync3();
+// })
+// .then(function(data){
+//     console.log(data);
+//     return runAsync4();
+// })
+// .then(function(data){
+// 	  console.log(data);
+// })
+
+	</script>
+	
+</body>
+</html>
